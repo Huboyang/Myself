@@ -1,0 +1,6 @@
+CREATE TABLE `shop` (
+  `id` INT(11) NOT NULL,
+  `age` INT(11) DEFAULT NULL,
+  `cupsize` VARCHAR(255) COLLATE utf8_bin DEFAULT NULL,
+  PRIMARY KEY (`id`)
+)
