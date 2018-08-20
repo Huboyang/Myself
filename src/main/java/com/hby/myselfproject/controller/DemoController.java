@@ -1,6 +1,5 @@
 package com.hby.myselfproject.controller;
 
-import com.hby.myselfproject.Service.ShopService;
 import com.hby.myselfproject.entity.Shop;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,10 +9,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class DemoController {
-
-    //把Service的东西注入进来 方便使用
-    @Autowired
-    ShopService shopService;
 
     //请求参数  (get post)
     @GetMapping("test")
@@ -42,8 +37,6 @@ public class DemoController {
         s.setAge(25);
         s.setCupsize("B");
         System.out.println(s.toString());
-        shopService.insert(s);
-
         return "success";
     }
 }
