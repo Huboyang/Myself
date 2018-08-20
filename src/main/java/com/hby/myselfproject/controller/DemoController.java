@@ -14,9 +14,7 @@ public class DemoController {
     @Autowired
     IShopService shopService;
 
-    //请求参数  (get post)
     @GetMapping("test")
-    //返回json数据
     @ResponseBody
     public String test(){
         return "test";
@@ -28,20 +26,14 @@ public class DemoController {
         return "Hello Word!";
     }
 
-    @GetMapping("index")
-    public String index(Model model){
-        //返回到页面 templates  默认数resources的templates文件夹下面
-        model.addAttribute("a","HelloWord");
-        return "index";
-    }
-
     @GetMapping("save")
     public String save(){
         Shop s = new Shop();
+        s.setId(5);
         s.setAge(25);
         s.setCupsize("B");
-        System.out.println(s.toString());
-        shopService.insert(s);
+        boolean b = shopService.insert(s);
+        System.out.println(b);
         return "success";
     }
 }

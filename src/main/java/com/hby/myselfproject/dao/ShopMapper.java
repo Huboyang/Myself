@@ -1,4 +1,4 @@
-package com.hby.myselfproject.mapper;
+package com.hby.myselfproject.dao;
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.hby.myselfproject.entity.Shop;
