@@ -27,9 +27,9 @@ spring:
   #数据库
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/interview?useUnicode=true&characterEncoding=utf8
-    username: root
-    password: 123
+    url: jdbc:mysql://111.231.227.44:3306/interview?useUnicode=true&characterEncoding=utf8
+    username: hby
+    password: hby123
     type: com.alibaba.druid.pool.DruidDataSource
     # 下面为连接池的补充设置，应用到上面所有数据源中
     #初始化大小,最大最小
