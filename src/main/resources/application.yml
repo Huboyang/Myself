@@ -1,7 +1,7 @@
 spring:
 #选择模式 dev 开发 prod 生产
-  profiles:
-    active: dev
+#  profiles:
+#    active: dev
   #spring-data-jpa
   jpa:
     hibernate:
@@ -27,7 +27,7 @@ spring:
   #数据库
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://111.231.227.44:3306/interview?useUnicode=true&characterEncoding=utf8
+    url: jdbc:mysql://111.231.227.44:3306/interview?useUnicode=true&characterEncoding=utf8&useSSL=false
     username: hby
     password: hby123
     type: com.alibaba.druid.pool.DruidDataSource
@@ -59,7 +59,7 @@ spring:
 mybatis-plus:
   # 如果是放在src/main/java目录下 classpath:/com/yourpackage/*/mapper/*Mapper.xml
   # 如果是放在resource目录 classpath:/mapper/*Mapper.xml
-  mapper-locations: classpath:/com/hby/myselfproject/dao/mapper/*.Mapper.xml
+  mapper-locations: classpath:com/hby/myselfproject/dao/mapper/*.Mapper.xml
   #实体扫描，多个package用逗号或者分号分隔
   typeAliasesPackage: com.hby.myselfproject.entity
   global-config:
