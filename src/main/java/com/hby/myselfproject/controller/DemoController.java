@@ -1,18 +1,15 @@
 package com.hby.myselfproject.controller;
 
+import com.baomidou.mybatisplus.mapper.Condition;
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.hby.myselfproject.entity.Shop;
-import com.hby.myselfproject.exception.AesException;
 import com.hby.myselfproject.service.IShopService;
-import com.hby.myselfproject.utils.WXPublicUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
+import java.sql.Wrapper;
+import java.util.List;
 
 @RestController
 public class DemoController {
@@ -30,15 +27,10 @@ public class DemoController {
         return "Hello Word!";
     }
 
-    @GetMapping("/wx/provingToken")
-    public String provingToken(HttpServletRequest request) throws AesException {
-        String msgSignature = request.getParameter("signature");
-        String msgTimestamp = request.getParameter("timestamp");
-        String msgNonce = request.getParameter("nonce");
-        String echostr = request.getParameter("echostr");
-        if (WXPublicUtils.verifyUrl(msgSignature, msgTimestamp, msgNonce)) {
-            return echostr;
-        }
-        return null;
+    @RequestMapping("select")
+    public String select(){
+        EntityWrapper ew = new EntityWrapper();
+        List<Shop> list = shopService.selectList(ew);
+        return list.toString();
     }
 }

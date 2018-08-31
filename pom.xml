@@ -87,6 +87,27 @@
             <groupId>redis.clients</groupId>
             <artifactId>jedis</artifactId>
         </dependency>
+        <!-- Base64编码需要  -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>codec</artifactId>
+            <version>1.9</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/commons-codec-1.9.jar</systemPath>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.itextpdf.tool/xmlworker -->
+        <dependency>
+            <groupId>com.itextpdf.tool</groupId>
+            <artifactId>xmlworker</artifactId>
+            <version>5.5.12</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.itextpdf/itext-asian -->
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>itext-asian</artifactId>
+            <version>5.2.0</version>
+        </dependency>
     </dependencies>
 
     <build>

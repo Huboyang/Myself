@@ -1,3 +1,4 @@
+
 spring:
 #选择模式 dev 开发 prod 生产
 #  profiles:
@@ -59,7 +60,7 @@ spring:
 mybatis-plus:
   # 如果是放在src/main/java目录下 classpath:/com/yourpackage/*/mapper/*Mapper.xml
   # 如果是放在resource目录 classpath:/mapper/*Mapper.xml
-  mapper-locations: classpath:com/hby/myselfproject/dao/mapper/*.Mapper.xml
+  mapper-locations: classpath:/com/hby/myselfproject/dao/mapper/*Mapper.xml
   #实体扫描，多个package用逗号或者分号分隔
   typeAliasesPackage: com.hby.myselfproject.entity
   global-config:
@@ -84,3 +85,5 @@ mybatis-plus:
     multipleResultSetsEnabled: true
     #打印sql语句,调试用
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+server:
+  port: 8081
