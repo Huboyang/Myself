@@ -1,4 +1,3 @@
-
 spring:
 #选择模式 dev 开发 prod 生产
 #  profiles:
@@ -11,14 +10,14 @@ spring:
     database: mysql
   #redis
   redis:
-    host: 111.231.227.44
-    password: hby123
+    host: 192.168.7.103
+    password: CY3H9zw9nBD3
     port: 6379
     timeout: 6000
     jedis:
           pool:
             # 连接池最大连接数（使用负值表示没有限制
-            max-active: 1000
+            max-active: -1
             # 连接池最大阻塞等待时间（使用负值表示没有限制）
             max-wait: -1ms
             # 连接池中的最大空闲连接
@@ -28,9 +27,9 @@ spring:
   #数据库
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://111.231.227.44:3306/interview?useUnicode=true&characterEncoding=utf8&useSSL=false
-    username: hby
-    password: hby123
+    url: jdbc:mysql://192.168.7.125:3306/eoop_studio?useUnicode=true&characterEncoding=utf8&useSSL=false
+    username: SAP
+    password: SAP_Sunac@2018
     type: com.alibaba.druid.pool.DruidDataSource
     # 下面为连接池的补充设置，应用到上面所有数据源中
     #初始化大小,最大最小
@@ -86,4 +85,9 @@ mybatis-plus:
     #打印sql语句,调试用
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 server:
-  port: 8081
+  port: 8888
+jco:
+  host: hcmtest.sunac.com.cn
+  clientName: 200
+  userId: RFC_RC
+  password: 123456
