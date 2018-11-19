@@ -3,13 +3,14 @@ package com.hby.myselfproject.controller;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.ctstudio.common.exception.BusinessException;
 import com.hby.myselfproject.SAP.SAPDAO;
 import com.hby.myselfproject.SAP.SAPJSONCaller;
 import com.hby.myselfproject.config.RedisConfig;
 import com.hby.myselfproject.entity.SapUser;
+import com.hby.myselfproject.entity.SapDict;
 import com.hby.myselfproject.service.ISapUserService;
+import com.hby.myselfproject.service.SapWerksService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,9 @@ public class ZujkController {
     private ISapUserService sapUserService;
 
     @Autowired
+    private SapWerksService sapWerksService;
+
+    @Autowired
     private RedisConfig redisConfig;
 
 
@@ -51,6 +55,12 @@ public class ZujkController {
         return "执行完毕";
     }
 
+    //执行
+    @GetMapping("execute2")
+    public String execute2(){
+        ddrw2();
+        return  "执行完毕";
+    }
     //获取日志
     @GetMapping("getErrorLog/{date}")
     public JSONArray getErrorLog(@PathVariable String date){
@@ -109,6 +119,44 @@ public class ZujkController {
                     boolean b = sapUserService.updateById(su);
                     if (!b){
                         ja.add("员工编号" + su.getId() + "未修改成功");
+                    }
+                }
+            }
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+            if (ja.size() > 0){
+                jedis.set("ERROR:"+sdf.format(new Date()),ja.toString());
+            }
+        } catch (BusinessException e) {
+            LOG.error("发生错误:",e);
+            e.printStackTrace();
+        }
+    }
+
+    @Scheduled(cron="0 0 1 * * *")
+    public void ddrw2(){
+        SAPJSONCaller caller = null;
+        Jedis jedis = redisConfig.getJedis();
+        try {
+            caller = sapdao.jsonCaller().setFunction("ZHRFM_DONATION_SEND").subscribe();
+            JSONArray users = caller.getTable("IT_WERKS");
+            JSONArray ja = new JSONArray();
+            SapDict sw = null;
+            for (int i = 0; i< users.size();i++){
+                JSONObject jsonObject = users.getJSONObject(i);
+                 sw = new SapDict();
+                 sw.setId(jsonObject.get("WERKS").toString());
+                 sw.setName(jsonObject.get("PBTXT").toString());
+                if (!REDIS_CZ.equals(jedis.get("ZZJK:"+sw.getId()))){
+                    boolean b = sapWerksService.insert(sw);
+                    if (b){
+                        jedis.set("ZZJK:"+sw.getId(),REDIS_CZ);
+                    } else {
+                        ja.add( sw.getId() + "未存储成功");
+                    }
+                } else {
+                    boolean b = sapWerksService.updateById(sw);
+                    if (!b){
+                        ja.add(sw.getId() + "未修改成功");
                     }
                 }
             }

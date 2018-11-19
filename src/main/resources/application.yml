@@ -8,7 +8,7 @@ spring:
     database: mysql
   #redis
   redis:
-    host: 192.168.7.114
+    host: 192.168.7.103
     password: CY3H9zw9nBD3
     port: 6379
     timeout: 6000
