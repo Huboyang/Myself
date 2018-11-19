@@ -10,6 +10,8 @@ import com.hby.myselfproject.SAP.SAPJSONCaller;
 import com.hby.myselfproject.config.RedisConfig;
 import com.hby.myselfproject.entity.SapUser;
 import com.hby.myselfproject.service.ISapUserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -27,6 +29,8 @@ import java.util.List;
 @RequestMapping("zzjk")
 @EnableScheduling
 public class ZujkController {
+
+    private static Logger LOG = LoggerFactory.getLogger(ZujkController.class);
 
     public static final String REDIS_CZ = "SUCCESS";
 
@@ -65,63 +69,57 @@ public class ZujkController {
     @GetMapping("deleteId/{id}")
     public String deleteId(@PathVariable String id){
         Jedis jedis = redisConfig.getJedis();
-        jedis.select(1);
         jedis.del("ZZJK:"+id);
         return "删除成功";
     }
 
 
     @Scheduled(cron="0 0 0 * * ?")
+    @GetMapping("gxRedis")
     public void gxRedis() {
         EntityWrapper<SapUser> wrapper = new EntityWrapper<>();
         List<SapUser> sapUsers = sapUserService.selectList(wrapper);
         Jedis jedis = redisConfig.getJedis();
         jedis.flushDB();
-        jedis.select(1);
         sapUsers.forEach( a ->{
             jedis.set("ZZJK:"+a.getId(),REDIS_CZ);
         });
     }
 
-
     @Scheduled(cron="0 0 1 * * *")
     public void ddrw(){
         SAPJSONCaller caller = null;
+        Jedis jedis = redisConfig.getJedis();
         try {
             caller = sapdao.jsonCaller().setFunction("ZHRFM_DONATION_SEND").subscribe();
-        } catch (BusinessException e) {
-            e.printStackTrace();
-        }
-        JSONArray users = caller.getTable("IT_USER");
-        Jedis jedis = redisConfig.getJedis();
-        jedis.select(1);
-        JSONArray ja = new JSONArray();
-        for (int i = 0; i< users.size();i++){
-            JSONObject jsonObject = users.getJSONObject(i);
-            SapUser su = JSONObject.toJavaObject(jsonObject, SapUser.class);
-            su.setPosition((String) jsonObject.get("ZPOSITION"));
-            if (!REDIS_CZ.equals(jedis.get("ZZJK:"+su.getId()))){
-                boolean b = sapUserService.insert(su);
-                if (b){
-                    jedis.set("ZZJK:"+su.getId(),REDIS_CZ);
+            JSONArray users = caller.getTable("IT_USER");
+            JSONArray ja = new JSONArray();
+            for (int i = 0; i< users.size();i++){
+                JSONObject jsonObject = users.getJSONObject(i);
+                SapUser su = JSONObject.toJavaObject(jsonObject, SapUser.class);
+                su.setPosition((String) jsonObject.get("ZPOSITION"));
+                if (!REDIS_CZ.equals(jedis.get("ZZJK:"+su.getId()))){
+                    boolean b = sapUserService.insert(su);
+                    if (b){
+                        jedis.set("ZZJK:"+su.getId(),REDIS_CZ);
+                    } else {
+                        ja.add("员工编号" + su.getId() + "未存储成功");
+                    }
                 } else {
-                    ja.add("员工编号" + su.getId() + "未存储成功");
-                }
-            } else {
-                boolean b = sapUserService.updateById(su);
-                if (!b){
-                    ja.add("员工编号" + su.getId() + "未修改成功");
+                    boolean b = sapUserService.updateById(su);
+                    if (!b){
+                        ja.add("员工编号" + su.getId() + "未修改成功");
+                    }
                 }
             }
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+            if (ja.size() > 0){
+                jedis.set("ERROR:"+sdf.format(new Date()),ja.toString());
+            }
+        } catch (BusinessException e) {
+            LOG.error("发生错误:",e);
+            e.printStackTrace();
         }
-        jedis.select(0);
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-        String s = jedis.get("ERROR:All");
-        JSONArray all = JSONArray.parseArray(s);
-        all.addAll(ja);
-        jedis.del("ERROR:All",all.toString());
-        jedis.set("ERROR:"+sdf.format(new Date()),ja.toString());
-        jedis.close();
     }
 
 }

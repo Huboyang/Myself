@@ -1,7 +1,5 @@
 spring:
 #选择模式 dev 开发 prod 生产
-#  profiles:
-#    active: dev
   #spring-data-jpa
   jpa:
     hibernate:
@@ -10,7 +8,7 @@ spring:
     database: mysql
   #redis
   redis:
-    host: 192.168.7.103
+    host: 192.168.7.114
     password: CY3H9zw9nBD3
     port: 6379
     timeout: 6000
@@ -27,7 +25,7 @@ spring:
   #数据库
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://192.168.7.125:3306/eoop_studio?useUnicode=true&characterEncoding=utf8&useSSL=false
+    url: jdbc:mysql://192.168.7.131:3306/eoop_studio?useUnicode=true&characterEncoding=utf8&useSSL=false
     username: SAP
     password: SAP_Sunac@2018
     type: com.alibaba.druid.pool.DruidDataSource
@@ -83,11 +81,17 @@ mybatis-plus:
     #开启的话，延时加载一个属性时会加载该对象全部属性，否则按需加载属性
     multipleResultSetsEnabled: true
     #打印sql语句,调试用
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 server:
   port: 8888
+#jco:
+#  host: hcmtest.sunac.com.cn
+#  clientName: 200
+#  userId: RFC_RC
+#  password: 123456
+
 jco:
-  host: hcmtest.sunac.com.cn
-  clientName: 200
+  host: hcmprdapp1.sunac.com.cn
+  clientName: 800
   userId: RFC_RC
   password: 123456

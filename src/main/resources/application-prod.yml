@@ -1,6 +1,47 @@
-server:
-  port: 8082
-  servlet:
-    context-path: /myself
-girl:
-  Cupsize: A
+spring:
+  redis:
+      host: 192.168.7.114
+      password: CY3H9zw9nBD3
+      port: 6379
+      timeout: 6000
+      jedis:
+            pool:
+              # 连接池最大连接数（使用负值表示没有限制
+              max-active: -1
+              # 连接池最大阻塞等待时间（使用负值表示没有限制）
+              max-wait: -1ms
+              # 连接池中的最大空闲连接
+              max-idle: 10
+              # 连接池中的最小空闲连接
+              min-idle: 5
+  #数据库
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://192.168.7.131:3306/eoop_studio?useUnicode=true&characterEncoding=utf8&useSSL=false
+    username: SAP
+    password: SAP_Sunac@2018
+    type: com.alibaba.druid.pool.DruidDataSource
+    # 下面为连接池的补充设置，应用到上面所有数据源中
+    #初始化大小,最大最小
+    initialSize: 1
+    minIdle: 3
+    maxActive: 20
+    #配置获取连接等待超时的时间
+    maxWait: 60000
+    # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+    timeBetweenEvictionRunsMillis: 60000
+    # 配置一个连接在池中最小生存的时间，单位是毫秒
+    minEvictableIdleTimeMillis: 30000
+    validationQuery: select 'x'
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    # 打开PSCache，并且指定每个连接上PSCache的大小
+    poolPreparedStatements: true
+    maxPoolPreparedStatementPerConnectionSize: 20
+    # 配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
+    filters: stat,wall,slf4j
+    # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
+    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+    # 合并多个DruidDataSource的监控数据
+    useGlobalDataSourceStat: true
