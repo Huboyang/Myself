@@ -225,6 +225,14 @@
         </dependency>
 
         <dependency>
+            <groupId>com.ciicgat.open</groupId>
+            <artifactId>open-sdk-java</artifactId>
+            <version>1.0.2</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/open-sdk-java-1.0.2-jar-with-dependencies.jar</systemPath>
+        </dependency>
+
+        <dependency>
             <groupId>com.businessobjects</groupId>
             <artifactId>cryptojFIPS</artifactId>
             <version>0.0.1</version>
@@ -253,6 +261,7 @@
             <artifactId>quartz</artifactId>
             <version>2.2.1</version>
         </dependency>
+
     </dependencies>
 
     <build>
@@ -276,8 +285,6 @@
             </resource>
         </resources>
     </build>
-
-
     <profiles>
         <profile>
             <id>jco-mac</id>

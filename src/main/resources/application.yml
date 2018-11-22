@@ -81,7 +81,7 @@ mybatis-plus:
     #开启的话，延时加载一个属性时会加载该对象全部属性，否则按需加载属性
     multipleResultSetsEnabled: true
     #打印sql语句,调试用
-#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 server:
   port: 8888
 #jco:
