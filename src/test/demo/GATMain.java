@@ -24,20 +24,13 @@ public class GATMain {
     String appsecret = "62ec8ecb0e312be92da2307b7c9df686";
     //所有接口方法均在 GATOpen 中 ，只需实例化GATOpen即可使用。
     GATOpen gatOpen = new GATOpen(appid, appsecret,"https://openapi.guanaitong.cc");
-    /*ApiResponse<Token> token = gatOpen.createToken();
-    Token data = token.getData();
-    System.out.println(token.getCode());
-    System.out.println(data.toString());
-    System.out.println(token.getMsg());
-    System.out.println("------分割线------");*/
-   /* ApiResponse<Token> tokenInfo = gatOpen.getTokenInfo("b69a1aff3c0eb0f4d27fec81d6524de5");
-    System.out.println(tokenInfo.getCode());
-    System.out.println(tokenInfo.getData().toString());
-    System.out.println(tokenInfo.getMsg());*/
+    String token = GATTokenService.getGatToken();
+    ApiResponse<List<EmployeeAccount>> listApiResponse = gatOpen.accountEmployee("00000006");
+    List<EmployeeAccount> data = listApiResponse.getData();
+    data.forEach(a->{
+      System.out.println(a);
+    });
 
-    ApiResponse<List<EmployeeAccount>> response = gatOpen.accountEmployee("00000006");
-
-    int code = response.getCode();
   }
 
   @Test
